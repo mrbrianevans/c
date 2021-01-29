@@ -5,9 +5,9 @@
 # first argument is name of the file (exluding the file extension)
 
 echo "Compiling and running $1.c"
-gcc -c $1.c -o $1.o
+gcc -ansi -c $1.c -o $1.o
 
-gcc $1.o -o $1.e
+gcc $1.o -lgsl -lgslcblas -o $1.e
 
 # dot e for executable
 
