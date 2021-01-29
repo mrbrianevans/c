@@ -7,6 +7,9 @@
 echo "Compiling and running $1.c"
 gcc -c $1.c -o $1.o
 
-gcc $1.o -o $1
+gcc $1.o -o $1.e
 
-./$1
+# dot e for executable
+
+./$1.e
+
