@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This should compile, link and run a C program
+# This should compile, link and run a single file C program
 
 # first argument is name of the file (exluding the file extension)
 

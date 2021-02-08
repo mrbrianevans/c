@@ -26,3 +26,25 @@ The main method should return 0 for a successful exit code
 
 ### Function definitions
 Here you should define the code for the function prototypes declared earlier. These are used in the main method.
+
+## Large program structures
+The above structure is how a single file program can be structured, but larger programs require a different structure:
+
+ - `struct`s and `typedefs` go into a `.h` file
+ - function definitions go into the same named file, but with a `.c` extension, and `#include` `.h`
+ - any file can use this functionality by `#include`ing the `.h` file
+
+To compile and link this program:
+
+Compile each individual file
+```shell
+gcc -ansi -I./ -c file.c -o file.o
+```
+
+Link them all together
+```shell
+gcc file1.o file2.o file3.o -o outputname
+```
+where output name is the same name as the file containing a main function
+
+Hash include guard your modules to stop multiple declarations of the same thing
