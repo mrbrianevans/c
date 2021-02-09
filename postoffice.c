@@ -1,10 +1,14 @@
 /* Coursework - post office queueing system */
 #include <queue.h>
-
+#include <getInstructions.h>
 
 /* MAIN --------------------------------------------------*/
-int main ()
+int main (int argc, char **argv)
 {
+  /* Get input options from file (command line argument) */
+  INPUT_OPTIONS *inputOptions = NULL;
+  readInputOptionsFromFile(argv[1], inputOptions);
+
 	/* --- Example queue --- */
 	QUEUE *head = makeNewQueueItem(3);
 	QUEUE *tail = makeNewQueueItem(0);

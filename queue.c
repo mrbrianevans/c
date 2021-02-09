@@ -1,7 +1,7 @@
 #include <queue.h>
 
 /* FUNCTION DEFINITIONS ---------------------------------*/
-void printQueueFromHead(QUEUE *head)
+extern void printQueueFromHead(QUEUE *head)
 {
 	printf("%d", head->toleranceRemaining);
 	if(head->next == NULL)
@@ -20,7 +20,7 @@ void printQueueFromHead(QUEUE *head)
  *  - int toleranceToWaiting the number of timesteps before the person leaves the queue
  *
  */
-QUEUE *makeNewQueueItem (int toleranceToWaiting)
+extern QUEUE *makeNewQueueItem (int toleranceToWaiting)
 {
 	QUEUE *newQueueItem = NULL;
 
@@ -45,7 +45,7 @@ QUEUE *makeNewQueueItem (int toleranceToWaiting)
  *
  * :returns: the new tail of the queue
  */
-QUEUE *push(int toleranceToWaiting, QUEUE *tail)
+extern QUEUE *push(int toleranceToWaiting, QUEUE *tail)
 {
 	QUEUE *newItem = makeNewQueueItem(toleranceToWaiting);
 	tail->next = newItem;
@@ -56,14 +56,14 @@ QUEUE *push(int toleranceToWaiting, QUEUE *tail)
  *
  * Frees the memory that the old head used
  */
-QUEUE *shift(QUEUE *head)
+extern QUEUE *shift(QUEUE *head)
 {
 	QUEUE *newHead = head->next;
 	free(head);
 	return newHead;
 }
 
-void emptyQueue(QUEUE *head)
+extern void emptyQueue(QUEUE *head)
 {
 
   if(head->next == NULL && head->previous == NULL)

@@ -1,3 +1,5 @@
+#ifndef __GET_INSTRUCTIONS_H
+#define __GET_INSTRUCTIONS_H 1
 #include <stdio.h>
 
 struct inputOptionsStruct
@@ -11,4 +13,6 @@ struct inputOptionsStruct
 typedef struct inputOptionsStruct INPUT_OPTIONS;
 
 /*--- Function prototypes --------------------*/
-INPUT_OPTIONS readInputOptionsFromFile(char[]);
+extern INPUT_OPTIONS readInputOptionsFromFile(char *);
+
+#endif
