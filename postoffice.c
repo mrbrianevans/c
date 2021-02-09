@@ -7,6 +7,7 @@ int main (int argc, char **argv)
 {
   /* Get input options from file (command line argument) */
   INPUT_OPTIONS *inputOptions = NULL;
+	inputOptions = (INPUT_OPTIONS *)malloc(sizeof(INPUT_OPTIONS));
   readInputOptionsFromFile(argv[1], inputOptions);
 
 	/* --- Example queue --- */

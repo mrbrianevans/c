@@ -13,6 +13,6 @@ struct inputOptionsStruct
 typedef struct inputOptionsStruct INPUT_OPTIONS;
 
 /*--- Function prototypes --------------------*/
-extern INPUT_OPTIONS readInputOptionsFromFile(char *);
+extern int readInputOptionsFromFile(char *, INPUT_OPTIONS *);
 
 #endif

@@ -1,7 +1,10 @@
 #!/bin/bash
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 echo "Compiling $1.c"
 gcc -ansi -I./ -c $1.c -o $1.o
 
 echo "Compile finished. To link to an executable, run:"
-echo "\x1b[32mgcc\x1b[0m file1.o file2.o file3.o -o outputname"
+echo -e "\033[0;32mgcc\033[0m file1.o file2.o file3.o ${RED}-o${NC} outputname"
