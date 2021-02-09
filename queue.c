@@ -68,19 +68,19 @@ void emptyQueue(QUEUE *head)
 
   if(head->next == NULL && head->previous == NULL)
   {
-    free(head)
-    return
+    free(head);
+    return;
   }
 
   if(head->next == NULL)
   {
-    QUEUE nextHead = head->next;
+    QUEUE *nextHead = head->next;
     free(head);
     emptyQueue(nextHead);
   }
   else
   {
-    QUEUE previousHead = head->previous;
+    QUEUE *previousHead = head->previous;
     free(head);
     emptyQueue(previousHead);
   }
