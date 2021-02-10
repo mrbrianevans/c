@@ -33,6 +33,7 @@ extern QUEUE *makeNewQueueItem (int toleranceToWaiting)
 	}
 
 	newQueueItem->toleranceRemaining = 	toleranceToWaiting;
+	newQueueItem->timeSpentWaiting = 	0;
 	newQueueItem->next = 			NULL;
 	newQueueItem->previous = 		NULL;
 	return newQueueItem;

@@ -5,7 +5,6 @@
 
 extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
 {
-	printf("Trying to read options from: %s\n", filename);
 	FILE *filepointer;
 	filepointer = fopen(filename, "r");
 	if( filepointer == NULL )
@@ -19,15 +18,11 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
 	{
 		fgets(templine, 200, filepointer);
 		if( templine[0] != '#' && strlen(templine) > 1 )
-		{	
-			if( sscanf(templine, "maxQueueLength %d", &inputOptions->maxQueueLength) == 1)
-				printf("Read %d as max queue length\n", inputOptions->maxQueueLength);
-			if( sscanf(templine, "numServicePoints %d", &inputOptions->numServicePoints) == 1)
-				printf("Read %d as number of service points\n", inputOptions->numServicePoints);
-			if( sscanf(templine, "closingTime %d", &inputOptions->closingTime) == 1)
-				printf("Read %d as closing time\n", inputOptions->closingTime);
-			if( sscanf(templine, "averageNewCustomersPerInterval %d", &inputOptions->averageNewCustomersPerInterval) == 1)
-				printf("Read %d as average new customers per interval\n", inputOptions->averageNewCustomersPerInterval);
+		{
+			sscanf(templine, "maxQueueLength %d", &inputOptions->maxQueueLength);
+			sscanf(templine, "numServicePoints %d", &inputOptions->numServicePoints);
+			sscanf(templine, "closingTime %d", &inputOptions->closingTime);
+			sscanf(templine, "averageNewCustomersPerInterval %d", &inputOptions->averageNewCustomersPerInterval);
 		}
 	}
 	if(inputOptions->maxQueueLength == 0)

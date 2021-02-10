@@ -6,10 +6,11 @@
 struct queueStruct
 {
 	int			toleranceRemaining;
+	int     timeSpentWaiting;
 	struct queueStruct	*next;
 	struct queueStruct	*previous;
 };
-
+/* Queue implemented by a doubly linked list */
 typedef struct queueStruct QUEUE;
 
 /* FUNCTION PROTOTYPES -----------------------------------*/
