@@ -16,7 +16,7 @@ static int randomFloat()
 
 }
 /*return a random int, uniformly distributed between min and max*/
-static int randomFloat(int min, int max)
+static int randomInt(int min, int max)
 {
 /* setup random number generator */
 	const gsl_rng_type	*T;

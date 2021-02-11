@@ -1,14 +1,23 @@
 /* Coursework - post office queueing system */
 #include <queue.h>
 #include <getInstructions.h>
-
+#include <stdio.h>
 /* MAIN --------------------------------------------------*/
 int main (int argc, char **argv)
 {
+  if( argc < 2 )
+	{
+		fprintf(stderr, "Not enough command line arguments. Try fileIn numSims fileOut\n");
+		return -1;
+	}
+	printf("Number of args: %d\n", argc);
+	char *inputFile = argv[1];
+  int numSims = *argv[2];/* not sure if this type conversion will work*/
+	char *outputFile = argv[3];
   /* Get input options from file (command line argument) */
   INPUT_OPTIONS *inputOptions = NULL;
-	inputOptions = (INPUT_OPTIONS *)malloc(sizeof(INPUT_OPTIONS));
-  if( readInputOptionsFromFile(argv[1], inputOptions) == 0 )
+  inputOptions = (INPUT_OPTIONS *)malloc(sizeof(INPUT_OPTIONS));
+  if( readInputOptionsFromFile(inputFile, inputOptions) == 0 )
   {
     printf("Options:\n");
     printf("Max queue length: %d\n", inputOptions->maxQueueLength);
@@ -19,13 +28,24 @@ int main (int argc, char **argv)
   else
     return -1;
 
-  int *numSims = argv[2]; /*not sure if this type conversion will work*/
-
-	/* --- Example queue --- */
 	QUEUE *head = makeNewQueueItem(3);
 	QUEUE *tail = makeNewQueueItem(0);
 	head->next = tail;
 	tail->previous = head;
+
+	SSTATS *statistics = NULL;
+	statistics = (SSTATS *)malloc(sizeof(SSTATS));
+	int timepoint;
+	for( timepoint = 0; timepoint < inputOptions->closingTime; timepoint++){
+		customersFinishedBeingServedLeave(queue, inputOptions, statistics);
+		customersInQueueGetServedAtAvailableServicePoints(queue, inputOptions, statistics);
+		customersLeaveQueueAfterReachingWaitingTolerance(queue, inputOptions, statistics);
+		customersArriveAtBackOfQueue(queue, inputOptions, statistics);
+		if( numSims == 1 )
+			printIterationStatistics(outputFile);
+	}
+
+	/* --- Example queue --- */
 	tail = push(1, tail);
 	tail = push(4, tail);
 	tail = push(1, tail);
