@@ -23,9 +23,9 @@ struct singleStatistics
 
 typedef struct singleStatistics SSTATS;
 
-extern int customersFinishedBeingServedLeave(SERVICE_POINTS servicePoints, INPUT_OPTIONS inputOptions);
-extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS servicePoints, QUEUE queue, INPUT_OPTIONS inputOptions);
-extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE queue, INPUT_OPTIONS inputOptions);
-extern int customersArriveAtBackOfQueue(QUEUE queue, INPUT_OPTIONS inputOptions);
-extern void printIterationStatistics(singleStatistics);
+extern int customersFinishedBeingServedLeave(SERVICE_POINTS *, INPUT_OPTIONS *, SSTATS *);
+extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *, QUEUE *, INPUT_OPTIONS *, SSTATS *);
+extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *, INPUT_OPTIONS *, SSTATS *);
+extern int customersArriveAtBackOfQueue(QUEUE *, INPUT_OPTIONS *, SSTATS *);
+extern void printIterationStatistics(SSTATS *);
 #endif

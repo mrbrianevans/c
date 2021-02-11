@@ -3,20 +3,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Queue implemented by a doubly linked list */
 struct queueItemStruct
 {
 	CUSTOMER customer;
 	struct queueItemStruct	*next;
 	struct queueItemStruct	*previous;
 };
-/* Queue implemented by a doubly linked list */
 typedef struct queueItemStruct QUEUE;
+
 struct queueStruct
 {
 	QUEUE_ITEM head;
 	QUEUE_ITEM tail;
 	int length;
-}
+};
 typedef struct queueStruct QUEUE;
 /* FUNCTION PROTOTYPES -----------------------------------*/
 extern QUEUE *makeNewQueue(); /* makes a head and tail of a queue*/

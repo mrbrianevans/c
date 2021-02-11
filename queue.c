@@ -1,17 +1,16 @@
 #include <queue.h>
 
 /* FUNCTION DEFINITIONS ---------------------------------*/
-extern void printQueueFromHead(QUEUE *head)
+extern void printQueueFromHead(QUEUE *queue)
 {
 	printf("%d", head->toleranceRemaining);
-	if(head->next == NULL)
+	if(queue->head->next == NULL)
 	{
 		printf("\n");
 		return;
 	}
 	printf("->");
-	printQueueFromHead(head->next);
-
+	printQueueFromHead(queue->head->next);
 }
 /* Returns a newly created QUEUE item
  *
@@ -20,7 +19,7 @@ extern void printQueueFromHead(QUEUE *head)
  *  - int toleranceToWaiting the number of timesteps before the person leaves the queue
  *
  */
-extern QUEUE *makeNewQueueItem (int toleranceToWaiting)
+static QUEUE *makeNewQueueItem (int toleranceToWaiting)
 {
 	QUEUE *newQueueItem = NULL;
 
@@ -31,9 +30,8 @@ extern QUEUE *makeNewQueueItem (int toleranceToWaiting)
 		printf("Memory allocation failed on makeNewQueueItem");
 		exit(-1);
 	}
-
-	newQueueItem->toleranceRemaining = 	toleranceToWaiting;
-	newQueueItem->timeSpentWaiting = 	0;
+	/* todo: implement the make new customer function */
+  newQueueItem->customer = makeNewCustomer(toleranceToWaiting);
 	newQueueItem->next = 			NULL;
 	newQueueItem->previous = 		NULL;
 	return newQueueItem;
@@ -46,10 +44,10 @@ extern QUEUE *makeNewQueueItem (int toleranceToWaiting)
  *
  * :returns: the new tail of the queue
  */
-extern QUEUE *push(int toleranceToWaiting, QUEUE *tail)
+extern QUEUE *push(int toleranceToWaiting, QUEUE *queue)
 {
-	QUEUE *newItem = makeNewQueueItem(toleranceToWaiting);
-	tail->next = newItem;
+	QUEUE_ITEM *newItem = makeNewQueueItem(toleranceToWaiting);
+	queue->tail->next = newItem;
 	newItem->previous = tail;
 	return newItem;
 }
@@ -57,32 +55,24 @@ extern QUEUE *push(int toleranceToWaiting, QUEUE *tail)
  *
  * Frees the memory that the old head used
  */
-extern QUEUE *shift(QUEUE *head)
+extern QUEUE *shift(QUEUE *queue)
 {
-	QUEUE *newHead = head->next;
+	QUEUE *newHead = queue->head->next;
 	free(head);
 	return newHead;
 }
 
-extern void emptyQueue(QUEUE *head)
+extern void emptyQueue(QUEUE *queue)
 {
 
-  if(head->next == NULL && head->previous == NULL)
+  if(queue->head->next == NULL && queue->tail->previous == NULL)
   {
     free(head);
     return;
   }
+  /* todo: fix empty queue function to work with queue objects*/
+  QUEUE *nextHead = head->next;
+  free(head);
+  emptyQueue(nextHead);
 
-  if(head->next == NULL)
-  {
-    QUEUE *nextHead = head->next;
-    free(head);
-    emptyQueue(nextHead);
-  }
-  else
-  {
-    QUEUE *previousHead = head->previous;
-    free(head);
-    emptyQueue(previousHead);
-  }
 }

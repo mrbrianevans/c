@@ -28,21 +28,19 @@ int main (int argc, char **argv)
   else
     return -1;
 
-	QUEUE *head = makeNewQueueItem(3);
-	QUEUE *tail = makeNewQueueItem(0);
-	head->next = tail;
-	tail->previous = head;
+	QUEUE queue = makeNewQueue();
+	SERVICE_POINTS servicePoints = makeServicePoints(inputOptions->numServicePoints);
 
 	SSTATS *statistics = NULL;
 	statistics = (SSTATS *)malloc(sizeof(SSTATS));
 	int timepoint;
 	for( timepoint = 0; timepoint < inputOptions->closingTime; timepoint++){
-		customersFinishedBeingServedLeave(queue, inputOptions, statistics);
-		customersInQueueGetServedAtAvailableServicePoints(queue, inputOptions, statistics);
+		customersFinishedBeingServedLeave(servicePoints, queue, inputOptions, statistics);
+		customersInQueueGetServedAtAvailableServicePoints(servicePoints, queue, inputOptions, statistics);
 		customersLeaveQueueAfterReachingWaitingTolerance(queue, inputOptions, statistics);
 		customersArriveAtBackOfQueue(queue, inputOptions, statistics);
 		if( numSims == 1 )
-			printIterationStatistics(outputFile);
+			printIterationStatistics(outputFile, statistics);
 	}
 
 	/* --- Example queue --- */

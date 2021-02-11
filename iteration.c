@@ -34,27 +34,42 @@ static int randomInt(int min, int max)
  * - customers join the back of the queue
  */
 
-extern int customersFinishedBeingServedLeave(SERVICE_POINTS servicePoints, INPUT_OPTIONS inputOptions)
+extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
   /* customers have a x% chance of finishing being served each timepoint. If rng > 0.4 then cust leaves */
   return 0;
 }
 
-extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS servicePoints, QUEUE queue, INPUT_OPTIONS inputOptions)
+extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *servicePoints, QUEUE *queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
   /* no random numbers, just move customers to service points */
   return 0;
 }
 
-extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE queue, INPUT_OPTIONS inputOptions)
+extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
   /* no random generator here, just check if timeSpentWaiting++==toleranceToWaiting */
   return 0;
 }
 
-extern int customersArriveAtBackOfQueue(QUEUE queue, INPUT_OPTIONS inputOptions)
+extern int customersArriveAtBackOfQueue(QUEUE queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
   /* randomly distributed around averageNumNewCustomers (eg 3) */
   return 0;
 }
 
+extern void printIterationStatistics(char *outputFile, SSTATS *stats)
+{
+  printf("\n");
+  printf("Statistics:\n");
+  printf("timeInterval: %d\n", stats->timeInterval);
+  printf("customersInQueue: %d\n", stats->customersInQueue);
+  printf("customersBeingServed: %d\n", stats->customersBeingServed);
+  printf("numFulfilled: %d\n", stats->numFulfilled);
+  printf("numUnfulfilled: %d\n", stats->numUnfulfilled);
+  printf("numTimedOut: %d\n", stats->numTimedOut);
+  printf("totalCustomersServed: %d\n", stats->totalCustomersServed);
+  printf("averageWaitTime: %d\n", stats->averageWaitTime);
+  printf("closingTimeToCompletion: %d\n", stats->closingTimeToCompletion);
+  printf("\n");
+}

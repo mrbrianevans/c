@@ -1,9 +1,9 @@
 struct servicePoint
 {
 	CUSTOMER customer; /* the customer currently being served */
-	
+
 };
-struct servicePoints 
+struct servicePoints
 {
 	/*need an array of service points*/
 	SERVICE_POINT[] points;
@@ -11,7 +11,7 @@ struct servicePoints
 };
 typedef struct servicePoints SERVICE_POINTS;
 
-extern SERVICE_POINTS *createServicePoints(int numServicePoints);
+extern SERVICE_POINTS *makeServicePoints(int numServicePoints);
 
 int getNumAvailableServicePoints();
 
