@@ -7,6 +7,7 @@
 #include <gsl/gsl_randist.h>
 #include <queue.h>
 #include <getInstructions.h>
+#include <servicePoints.h>
 
 struct singleStatistics
 {

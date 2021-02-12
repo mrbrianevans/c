@@ -1,8 +1,11 @@
-struct customer 
+struct customer
 {
-	
-	int	toleranceRemaining;
+
+	int	    toleranceRemaining;
 	int     timeSpentWaiting;
 }
 
 typedef struct customer CUSTOMER;
+
+
+extern makeNewCustomer(int);
