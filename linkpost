@@ -1,0 +1,10 @@
+#!/bin/bash
+
+./compile iteration
+./compile servicePoints
+./compile queue
+./compile postoffice
+./compile customer
+./compile getInstructions
+
+gcc -I./ iteration.o servicePoints.o queue.o postoffice.o customer.o getInstructions.o -lgsl -o postoffice
