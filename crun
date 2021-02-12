@@ -12,4 +12,3 @@ gcc $1.o -lgsl -lgslcblas -o $1.e
 # dot e for executable
 
 ./$1.e
-

@@ -1,27 +1,29 @@
 #include <stdio.h>
 
-void funcA (int);
-void funcB (int *);
+void funcA(int);
 
-int main ()
+void funcB(int *);
+
+int main()
 {
-	int num = 4;
+   int num = 4;
 
-	printf("num = %d\n", num);
-	funcB(&num);
-	printf("num = %d\n", num);
-	return 0;
+   printf("num = %d\n", num);
+   funcB(&num);
+   printf("num = %d\n", num);
+   return 0;
 }
 
 /* pass by value (x is a new memory location with the value copied) */
-void funcA (int x)
+void funcA(int x)
 {
-	x = 99;
+   x = 99;
 }
+
 /* this is pass by reference, will modify the original memory location */
-void funcB (int *x)
+void funcB(int *x)
 {
-	*x = 99;
+   *x = 99;
 }
 /* NOTE:
  *

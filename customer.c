@@ -1,17 +1,19 @@
 #include <customer.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-extern makeNewCustomer(int toleranceRemaining)
+extern CUSTOMER makeNewCustomer(int toleranceRemaining)
 {
-  CUSTOMER *newCustomer = NULL;
+   CUSTOMER *newCustomer = NULL;
 
-	/* allocate memory */
-	newCustomer = (CUSTOMER *)malloc(sizeof(CUSTOMER));
-	if(newCustomer == NULL)
-	{
-		printf("Memory allocation failed on makeNewCustomer");
-		exit(-1);
-	}
-  newCustomer->toleranceRemaining = toleranceRemaining;
-  newCustomer->timeSpentWaiting = 0;
-	return newCustomer;
+   /* allocate memory */
+   newCustomer = (CUSTOMER *) malloc(sizeof(CUSTOMER));
+   if( newCustomer == NULL )
+   {
+      printf("Memory allocation failed on makeNewCustomer");
+      exit(-1);
+   }
+   newCustomer->toleranceRemaining = toleranceRemaining;
+   newCustomer->timeSpentWaiting = 0;
+   return *newCustomer;
 }
