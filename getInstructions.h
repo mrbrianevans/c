@@ -9,6 +9,7 @@ struct inputOptionsStruct
    int numServicePoints;
    int closingTime;
    int averageNewCustomersPerInterval;
+   int averageServeTime;
 };
 
 typedef struct inputOptionsStruct INPUT_OPTIONS;

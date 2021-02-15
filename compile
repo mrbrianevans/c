@@ -5,5 +5,7 @@ NC='\033[0m' # No Color
 
 gcc -ansi -I./ -c $1.c -o $1.o
 
-echo "Compiled $1.c to $1.o. To link, run:"
-echo -e "\033[0;32mgcc ${RED}-I./\033[0m file1.o file2.o file3.o ${RED}-lgsl -o${NC} outputname"
+if [ $# -eq 1 ]; then
+  echo "Compiled $1.c to $1.o. To link, run:"
+  echo -e "\033[0;32mgcc ${RED}-I./\033[0m file1.o file2.o file3.o ${RED}-lgsl -o${NC} outputname"
+fi

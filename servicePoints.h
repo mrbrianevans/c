@@ -1,25 +1,45 @@
 #ifndef __SERVICE_POINTS_H
 #define __SERVICE_POINTS_H
 #include <customer.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
 struct servicePoint
 {
-   CUSTOMER customer; /* the customer currently being served */
+   CUSTOMER customer; */
+/* the customer currently being served *//*
+
 
 };
-typedef struct servicePoint SERVICE_POINT;
 
 struct servicePoints
 {
-   /*need an array of service points*/
+   */
+/*need an array of service points*//*
+
    int numServicePoints;
-   SERVICE_POINT points[];
+   struct servicePoint *points[];
 };
+
+typedef struct servicePoint SERVICE_POINT;
 typedef struct servicePoints SERVICE_POINTS;
 
-extern SERVICE_POINTS *makeServicePoints(int numServicePoints);
+extern SERVICE_POINTS *makeServicePoints(int);
 
 extern int getNumAvailableServicePoints();
 
-extern int serveCustomer(CUSTOMER customer);
+extern int serveCustomer(CUSTOMER);
+*/
 
+struct servicePoints
+{
+   int totalServicePoints;
+   int availableServicePoints;
+};
+typedef struct servicePoints SERVICE_POINTS;
+
+extern SERVICE_POINTS *makeServicePoints(int);
+
+/*extern int serveCustomer(CUSTOMER);*/
 #endif

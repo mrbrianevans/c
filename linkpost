@@ -1,10 +1,12 @@
 #!/bin/bash
 
-./compile iteration
-./compile servicePoints
-./compile queue
-./compile postoffice
-./compile customer
-./compile getInstructions
+./compile iteration quiet
+./compile servicePoints quiet
+./compile queue quiet
+./compile postoffice quiet
+./compile customer quiet
+./compile getInstructions quiet
 
 gcc -I./ iteration.o servicePoints.o queue.o postoffice.o customer.o getInstructions.o -lgsl -o postoffice
+
+./postoffice exampleFileIn.txt 1 fileOut.txt

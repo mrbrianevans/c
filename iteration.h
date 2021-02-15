@@ -14,11 +14,10 @@ struct singleStatistics
    int timeInterval;
    int customersInQueue;
    int customersBeingServed;
-   int numFulfilled;
-   int numUnfulfilled;
-   int numTimedOut;
-   int totalCustomersServed;
-   int averageWaitTime;
+   int numFulfilled; /* finished being served at postoffice */
+   int numUnfulfilled; /* arrived and queue was full */
+   int numTimedOut; /* arrived and left queue after waiting too long */
+   int totalWaitTime; /* used to calculate average wait time */
    int closingTimeToCompletion;
 };
 

@@ -5,7 +5,7 @@
 # The standard parameters, as described in the specification:
 maxQueueLength   20
 numServicePoints 3
-closingTime      100
+closingTime      10
 
 # Parameters added by you, for example:
 averageNewCustomersPerInterval 3

@@ -8,7 +8,7 @@ static QUEUE_ITEM *makeNewQueueItem(int);
 /* FUNCTION DEFINITIONS ---------------------------------*/
 static void printQueueItem(QUEUE_ITEM *queueItem)
 {
-   printf("%d", queueItem->customer.toleranceRemaining);
+   printf("%d", queueItem->customer.timeSpentWaiting);
    if( queueItem->next == NULL )
    {
       printf("\n");
