@@ -8,6 +8,7 @@
 #include <queue.h>
 #include <getInstructions.h>
 #include <servicePoints.h>
+#include <math.h>
 
 struct singleStatistics
 {
@@ -19,6 +20,7 @@ struct singleStatistics
    int numTimedOut; /* arrived and left queue after waiting too long */
    int totalWaitTime; /* used to calculate average wait time */
    int closingTimeToCompletion;
+   int totalServeTime;
 };
 
 typedef struct singleStatistics SSTATS;

@@ -1,7 +1,4 @@
 #include <getInstructions.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
 
 extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
 {
@@ -14,7 +11,6 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
       return -1; /* non-zero return value for error. negative for fatal error */
    }
    char templine[200]; /*200 characters should be enough for any input*/
-   int maxQueueLength = 0;
    while( !feof(filepointer))
    {
       fgets(templine, 200, filepointer);
@@ -24,6 +20,8 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
          sscanf(templine, "numServicePoints %d", &inputOptions->numServicePoints);
          sscanf(templine, "closingTime %d", &inputOptions->closingTime);
          sscanf(templine, "averageNewCustomersPerInterval %d", &inputOptions->averageNewCustomersPerInterval);
+         sscanf(templine, "averageToleranceToWaiting %d", &inputOptions->averageToleranceToWaiting);
+         sscanf(templine, "averageServeTime %d", &inputOptions->averageServeTime);
       }
    }
    if( inputOptions->maxQueueLength == 0 )
@@ -34,6 +32,20 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions)
       printf("You failed to enter the required parameter: closingTime\n");
    if( inputOptions->averageNewCustomersPerInterval == 0 )
       printf("You failed to enter the required parameter: averageNewCustomersPerInterval\n");
+   if( inputOptions->averageServeTime == 0 )
+      printf("You failed to enter the required parameter: averageServeTime\n");
+   if( inputOptions->averageToleranceToWaiting == 0 )
+      printf("You failed to enter the required parameter: averageToleranceToWaiting\n");
    fclose(filepointer);
+
+   /* setup random number generator */
+   const gsl_rng_type *T;
+   /*gsl_rng *r;*/
+   gsl_rng_env_setup();
+   T = gsl_rng_default;
+   inputOptions->r = gsl_rng_alloc(T);
+   gsl_rng_set(inputOptions->r, time(0));
+
+
    return 0;
 }

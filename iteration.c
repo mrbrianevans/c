@@ -1,32 +1,24 @@
 #include <iteration.h>
 
-static float randomFloat();
+static float randomFloat(gsl_rng *);
 
-static int randomInt(int, int);
+static int randomInt(gsl_rng *, int, int);
 
 /*return a random float, uniformly distributed*/
-static float randomFloat()
+static float randomFloat(gsl_rng *r)
 {
-/* setup random number generator */
-   const gsl_rng_type *T;
-   gsl_rng *r;
-   gsl_rng_env_setup();
-   T = gsl_rng_default;
-   r = gsl_rng_alloc(T);
-   gsl_rng_set(r, time(0));
-   gsl_ran_flat_pdf();
+
+   float randFloat = gsl_ran_flat(r, 0, 1);
+   return randFloat;
 }
 
 /*return a random int, uniformly distributed between min and max*/
-static int randomInt(int min, int max)
+static int randomInt(gsl_rng *r, int min, int max)
 {
-/* setup random number generator */
-   const gsl_rng_type *T;
-   gsl_rng *r;
-   gsl_rng_env_setup();
-   T = gsl_rng_default;
-   r = gsl_rng_alloc(T);
-   gsl_rng_set(r, time(0));
+   float randFloat = randomFloat(r);
+   float floatInRange = randFloat * (max - min) + min;
+   int intInRange = (int) floatInRange;
+   return intInRange;
 }
 
 /*
@@ -40,14 +32,13 @@ extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints, INPU
 {
    /* customers have a x% chance of finishing being served each timepoint. If rng > 0.4 then cust leaves */
    int numberOfCustomersBeingServed = servicePoints->totalServicePoints - servicePoints->availableServicePoints;
-   printf("Customers occupying service points: %d\n", numberOfCustomersBeingServed);
    int i;
    for(i = 0; i < numberOfCustomersBeingServed; ++i)
    {
-      float randomNumber = randomFloat();
-      if( randomNumber > (1 / inputOptions->averageServeTime))
+      stats->totalServeTime++;
+      float randomNumber = randomFloat(inputOptions->r);
+      if( randomNumber < (1.00 / inputOptions->averageServeTime))
       {
-         printf("Customer %d leaves service point", i);
          stats->customersBeingServed--;
          stats->numFulfilled++;
          servicePoints->availableServicePoints++;
@@ -60,10 +51,11 @@ extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *ser
                                                              INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
    /* no random numbers, just move customers to service points */
-   while( servicePoints->availableServicePoints && queue->length )
+   while( servicePoints->availableServicePoints > 0 && stats->customersInQueue > 0 )
    {
       /* While there are available service points and customers waiting... */
-      servicePoints->availableServicePoints--;
+      servicePoints->availableServicePoints = servicePoints->availableServicePoints - 1;
+      /*stats->totalWaitTime += queue->head->customer->timeSpentWaiting;*/
       shift(queue);
       stats->customersBeingServed++;
       stats->customersInQueue--;
@@ -75,12 +67,14 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_
 {
    /* no random generator here, just check if timeSpentWaiting++==toleranceToWaiting */
    QUEUE_ITEM *currentQitem = queue->head;
+   stats->totalWaitTime += queue->length;
    int i;
    for(i = 0; i < queue->length; ++i)
    {
-      if( currentQitem->customer.toleranceRemaining > currentQitem->customer.timeSpentWaiting++ )
+      if( currentQitem->customer->toleranceRemaining < currentQitem->customer->timeSpentWaiting++ )
       {
          stats->numTimedOut++;
+         /*stats->totalWaitTime += currentQitem->customer->timeSpentWaiting;*/
          stats->customersInQueue--;
          if( currentQitem->previous == NULL )
          { /*this is if the head times out*/
@@ -95,13 +89,14 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_
             free(currentQitem);
             break;
          }
-         /*this is if a regular customer times out*/
-         QUEUE_ITEM *swapNextItem = currentQitem->next;
-         currentQitem->previous->next = swapNextItem;
-         currentQitem->next->previous = currentQitem->previous;
-         free(currentQitem);
-         currentQitem = swapNextItem;
-         free(swapNextItem);
+         else
+         {
+            /*this is if a regular customer times out*/
+            currentQitem->previous->next = currentQitem->next;
+            currentQitem->next->previous = currentQitem->previous;
+            queue->length--;
+            currentQitem = currentQitem->next;
+         }
       }
       else
       {
@@ -116,13 +111,25 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_
 extern int customersArriveAtBackOfQueue(QUEUE *queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
    /* randomly distributed around averageNumNewCustomers (eg 3) */
-   int minToleranceToWaiting = inputOptions->averageToleranceToWaiting / 2;
+   int minToleranceToWaiting = (int) (inputOptions->averageToleranceToWaiting / 2);
    int maxToleranceToWaiting = minToleranceToWaiting * 3;
-   int numberOfNewCustomers;
-   for(numberOfNewCustomers = randomInt(0, inputOptions->averageNewCustomersPerInterval * 2);
-       numberOfNewCustomers > 0; numberOfNewCustomers--)
+   if( minToleranceToWaiting < 1 ) minToleranceToWaiting = 0;
+   if( maxToleranceToWaiting < 2 ) minToleranceToWaiting = 2;
+   int numberOfNewCustomers = randomInt(inputOptions->r, 0, inputOptions->averageNewCustomersPerInterval * 2);
+   int numberOfRejectedCustomers = 0;
+   for(;
+         numberOfNewCustomers > 0; numberOfNewCustomers--)
    {
-      push(randomInt(minToleranceToWaiting, maxToleranceToWaiting), queue);
+      if( queue->length == inputOptions->maxQueueLength )
+      {
+         stats->numUnfulfilled++;
+         numberOfRejectedCustomers++;
+      }
+      else
+      {
+         push(randomInt(inputOptions->r, minToleranceToWaiting, maxToleranceToWaiting), queue);
+         stats->customersInQueue++;
+      }
    }
    return 0;
 }
@@ -139,5 +146,6 @@ extern void printIterationStatistics(char *outputFile, SSTATS *stats)
    printf("numTimedOut: %d\n", stats->numTimedOut);
    printf("totalWaitingTime: %d\n", stats->totalWaitTime);
    printf("closingTimeToCompletion: %d\n", stats->closingTimeToCompletion);
+   printf("totalServeTime: %d\n", stats->totalServeTime);
    printf("\n");
 }

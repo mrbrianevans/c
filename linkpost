@@ -9,4 +9,4 @@
 
 gcc -I./ iteration.o servicePoints.o queue.o postoffice.o customer.o getInstructions.o -lgsl -o postoffice
 
-./postoffice exampleFileIn.txt 1 fileOut.txt
+./postoffice exampleFileIn.txt 2 fileOut.txt

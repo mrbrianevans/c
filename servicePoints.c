@@ -35,7 +35,6 @@ extern int serveCustomer(CUSTOMER customer)
 }*/
 extern SERVICE_POINTS *makeServicePoints(int numServicePoints)
 {
-   printf("Asked to make %d new service points\n", numServicePoints);
    SERVICE_POINTS *servicePoints = NULL;
    servicePoints = (SERVICE_POINTS *) malloc(sizeof(SERVICE_POINTS));
    if( servicePoints == NULL )

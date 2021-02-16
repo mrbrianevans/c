@@ -8,7 +8,7 @@
 /* Queue implemented by a doubly linked list */
 struct queueItemStruct
 {
-   CUSTOMER customer;
+   CUSTOMER *customer;
    struct queueItemStruct *next;
    struct queueItemStruct *previous;
 };
@@ -16,8 +16,8 @@ typedef struct queueItemStruct QUEUE_ITEM;
 
 struct queueStruct
 {
-   QUEUE_ITEM *head;
-   QUEUE_ITEM *tail;
+   struct queueItemStruct *head;
+   struct queueItemStruct *tail;
    int length;
 };
 typedef struct queueStruct QUEUE;

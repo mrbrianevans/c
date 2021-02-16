@@ -14,6 +14,6 @@ typedef struct customerObject CUSTOMER;
  * @param int toleranceToWaiting the number of time steps before the person leaves the queue
  * @returns CUSTOMER new customer object
  */
-extern CUSTOMER makeNewCustomer(int);
+extern CUSTOMER *makeNewCustomer(int);
 
 #endif

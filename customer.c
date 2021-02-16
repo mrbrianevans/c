@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-extern CUSTOMER makeNewCustomer(int toleranceRemaining)
+extern CUSTOMER *makeNewCustomer(int toleranceRemaining)
 {
    CUSTOMER *newCustomer = NULL;
 
@@ -15,5 +15,5 @@ extern CUSTOMER makeNewCustomer(int toleranceRemaining)
    }
    newCustomer->toleranceRemaining = toleranceRemaining;
    newCustomer->timeSpentWaiting = 0;
-   return *newCustomer;
+   return newCustomer;
 }

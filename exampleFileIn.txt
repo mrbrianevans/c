@@ -1,11 +1,14 @@
-# The format of this file is up to you, but think about the way you structure it
-# to make it easy to understand and use, without making it hard for your program
-# to read.
+# The format of this file is:
+# - lines beginning with # are ignored as comments
+# - variables can be in any order
+# - if parameters are omitted, default values are used
 
 # The standard parameters, as described in the specification:
-maxQueueLength   20
-numServicePoints 3
-closingTime      10
+maxQueueLength   20000
+numServicePoints 100
+closingTime      100000
 
-# Parameters added by you, for example:
-averageNewCustomersPerInterval 3
+# Parameters added by me:
+averageNewCustomersPerInterval  100
+averageServeTime                100
+averageToleranceToWaiting       50

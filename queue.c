@@ -8,13 +8,14 @@ static QUEUE_ITEM *makeNewQueueItem(int);
 /* FUNCTION DEFINITIONS ---------------------------------*/
 static void printQueueItem(QUEUE_ITEM *queueItem)
 {
-   printf("%d", queueItem->customer.timeSpentWaiting);
+   printf("%d", queueItem->customer->toleranceRemaining);
    if( queueItem->next == NULL )
    {
-      printf("\n");
+      printf("(tail)\n");
       return;
    }
    printf("->");
+   fflush(stdout);
    printQueueItem(queueItem->next);
 }
 
@@ -25,6 +26,7 @@ extern void printQueue(QUEUE *queue)
       printf("Empty queue\n");
       return;
    }
+   printf("(head)");
    printQueueItem(queue->head);
 }
 
@@ -49,30 +51,62 @@ static QUEUE_ITEM *makeNewQueueItem(int toleranceToWaiting)
 
 extern void push(int toleranceToWaiting, QUEUE *queue)
 {
+   /*printf("Queue before push of %d: ", toleranceToWaiting);
+   printQueue(queue);*/
    QUEUE_ITEM *newItem = makeNewQueueItem(toleranceToWaiting);
    if( queue->length == 0 )
    {
       queue->head = newItem;
       queue->tail = newItem;
-      newItem->previous = newItem;
-      newItem->next = newItem;
+      /*newItem->previous = newItem;
+      newItem->next = newItem;*/
    }
    else
    {
-      queue->tail->next = newItem;
       newItem->previous = queue->tail;
+      queue->tail->next = newItem;
+      queue->tail = newItem;
    }
    queue->length++;
+   /*printf("Queue after push of %d: ", toleranceToWaiting);
+   printQueue(queue);*/
 }
 
 
 extern void shift(QUEUE *queue)
 {
+   /*printf("Queue before shift: ");
+   printQueue(queue);*/
    if( queue->length == 0 ) return;
-   QUEUE_ITEM *newHead = queue->head->next;
-   free(queue->head);
-   queue->head = newHead;
-   queue->length--;
+   if( queue->length == 1 )
+   {
+      free(queue->tail);
+      queue->head = NULL;
+      queue->length = 0;
+      queue->tail = NULL;
+      return;
+   }
+   if( queue->length == 2 )
+   {
+      free(queue->head);
+      queue->head = queue->tail;
+      queue->length = 1;
+      return;
+   }
+   else
+   {
+      QUEUE_ITEM *newHead = queue->head->next;
+      queue->head = NULL;
+      free(queue->head);
+      queue->head = newHead;
+      queue->head->previous = NULL;
+      queue->length--;
+   }
+   /*printf("Queue length is: %d, and head->next->tolerance is %d\n", queue->length, queue->head->next->customer->toleranceRemaining);
+   fflush(stdout);
+
+   printf("Queue after shift: ");
+   printQueue(queue);*/
 }
 
 extern void emptyQueue(QUEUE *queue)
