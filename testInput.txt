@@ -4,9 +4,9 @@
 # - if parameters are omitted(or commented out), default values are used
 
 # The standard parameters, as described in the specification:
-maxQueueLength   20
-numServicePoints 3
-closingTime      30
+maxQueueLength   10
+numServicePoints 6
+closingTime      100
 
 # Parameters added by me:
 averageNewCustomersPerInterval  3

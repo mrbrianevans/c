@@ -11,11 +11,16 @@
 #include <math.h>
 #include <statistics.h>
 
-extern int customersFinishedBeingServedLeave(SERVICE_POINTS *, INPUT_OPTIONS *, SSTATS *);
+extern int
+customersFinishedBeingServedLeave(SERVICE_POINTS *, INPUT_OPTIONS *, SSTATS *);
 
-extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *, QUEUE *, INPUT_OPTIONS *, SSTATS *);
+extern int
+customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *, QUEUE *,
+                                                  INPUT_OPTIONS *, SSTATS *);
 
-extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *, INPUT_OPTIONS *, SSTATS *);
+extern int
+customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *, INPUT_OPTIONS *,
+                                                 SSTATS *);
 
 extern int customersArriveAtBackOfQueue(QUEUE *, INPUT_OPTIONS *, SSTATS *);
 

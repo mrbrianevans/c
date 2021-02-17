@@ -1,10 +1,9 @@
-/* Coursework - post office queueing system */
+/* single post office simulation */
 #include <postoffice.h>
 
 extern int singleSimulation(INPUT_OPTIONS *inputOptions, FILE *outputFile,
                             MULTIPLE_STATISTICS *multipleStatistics)
 {
-
    int numSims = inputOptions->numSims;
    QUEUE *queue = makeNewQueue();
    SERVICE_POINTS *servicePoints = makeServicePoints(

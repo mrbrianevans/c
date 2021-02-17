@@ -28,10 +28,13 @@ static int randomInt(gsl_rng *r, int min, int max)
  * - customers join the back of the queue
  */
 
-extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints, INPUT_OPTIONS *inputOptions, SSTATS *stats)
+extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints,
+                                             INPUT_OPTIONS *inputOptions,
+                                             SSTATS *stats)
 {
    /* customers have a x% chance of finishing being served each time point. If random > x then customer leaves */
-   int numberOfCustomersBeingServed = servicePoints->totalServicePoints - servicePoints->availableServicePoints;
+   int numberOfCustomersBeingServed = servicePoints->totalServicePoints -
+                                      servicePoints->availableServicePoints;
    int i;
    for(i = 0; i < numberOfCustomersBeingServed; ++i)
    {
@@ -47,11 +50,14 @@ extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints, INPU
    return 0;
 }
 
-extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *servicePoints, QUEUE *queue,
-                                                             INPUT_OPTIONS *inputOptions, SSTATS *stats)
+extern int
+customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *servicePoints,
+                                                  QUEUE *queue,
+                                                  INPUT_OPTIONS *inputOptions,
+                                                  SSTATS *stats)
 {
-   /* no random numbers, just move customers to service points */
-   while( servicePoints->availableServicePoints > 0 && stats->customersInQueue > 0 )
+   while( servicePoints->availableServicePoints > 0 &&
+          stats->customersInQueue > 0 )
    {
       /* While there are available service points and customers waiting... */
       servicePoints->availableServicePoints =
@@ -65,9 +71,10 @@ extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *ser
    return 0;
 }
 
-extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
+extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue,
+                                                            INPUT_OPTIONS *inputOptions,
+                                                            SSTATS *stats)
 {
-   /* no random generator here, just check if timeSpentWaiting++==toleranceToWaiting */
    QUEUE_ITEM *currentQitem = queue->head;
    int i;
    for(i = 0; i < queue->length; ++i)
@@ -109,17 +116,21 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_
    return 0;
 }
 
-extern int customersArriveAtBackOfQueue(QUEUE *queue, INPUT_OPTIONS *inputOptions, SSTATS *stats)
+extern int
+customersArriveAtBackOfQueue(QUEUE *queue, INPUT_OPTIONS *inputOptions,
+                             SSTATS *stats)
 {
-   /* randomly distributed around averageNumNewCustomers (eg 3) */
-   int minToleranceToWaiting = (int) (inputOptions->averageToleranceToWaiting / 2);
+   /* randomly distributed 50% either side of averageNumNewCustomers */
+   int minToleranceToWaiting = (int) (inputOptions->averageToleranceToWaiting /
+                                      2);
    int maxToleranceToWaiting = minToleranceToWaiting * 3;
    if( minToleranceToWaiting < 1 ) minToleranceToWaiting = 0;
    if( maxToleranceToWaiting < 2 ) minToleranceToWaiting = 2;
-   int numberOfNewCustomers = randomInt(inputOptions->r, 0, inputOptions->averageNewCustomersPerInterval * 2);
+   int numberOfNewCustomers = randomInt(inputOptions->r, 0,
+                                        inputOptions->averageNewCustomersPerInterval *
+                                        2);
    int numberOfRejectedCustomers = 0;
-   for(;
-         numberOfNewCustomers > 0; numberOfNewCustomers--)
+   for(; numberOfNewCustomers > 0; numberOfNewCustomers--)
    {
       if( queue->length == inputOptions->maxQueueLength )
       {
@@ -128,7 +139,8 @@ extern int customersArriveAtBackOfQueue(QUEUE *queue, INPUT_OPTIONS *inputOption
       }
       else
       {
-         push(randomInt(inputOptions->r, minToleranceToWaiting, maxToleranceToWaiting), queue);
+         push(randomInt(inputOptions->r, minToleranceToWaiting,
+                        maxToleranceToWaiting), queue);
          stats->customersInQueue++;
       }
    }

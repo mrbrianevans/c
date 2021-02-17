@@ -33,15 +33,17 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions,
       }
    }
    fprintf(outputFile, "\x1b[32mParameters read from %s:\x1b[0m\n", filename);
-   fprintf(outputFile, "Max queue length: %d\n", inputOptions->maxQueueLength);
-   fprintf(outputFile, "Number of service points: %d\n",
+   fprintf(outputFile, "Max queue length:          %d\n",
+           inputOptions->maxQueueLength);
+   fprintf(outputFile, "Number of service points:  %d\n",
            inputOptions->numServicePoints);
-   fprintf(outputFile, "Closing time: %d\n", inputOptions->closingTime);
+   fprintf(outputFile, "Closing time:              %d\n",
+           inputOptions->closingTime);
    fprintf(outputFile, "Average new customers per interval: %d\n",
            inputOptions->averageNewCustomersPerInterval);
-   fprintf(outputFile, "Average tolerance to waiting: %d\n",
+   fprintf(outputFile, "Average tolerance to waiting:       %d\n",
            inputOptions->averageToleranceToWaiting);
-   fprintf(outputFile, "Average serve time: %d\n",
+   fprintf(outputFile, "Average serve time:                 %d\n",
            inputOptions->averageServeTime);
    /* if values are unspecified, defaults are used and the user is notified */
    if( inputOptions->maxQueueLength == 0 )
@@ -89,7 +91,5 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions,
    T = gsl_rng_default;
    inputOptions->r = gsl_rng_alloc(T);
    gsl_rng_set(inputOptions->r, time(0));
-
-
-   return 0;
+   return 0; /*return SUCCESS if no errors have occurred*/
 }

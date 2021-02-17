@@ -87,11 +87,10 @@ extern void emptyQueue(QUEUE *queue)
 extern QUEUE *makeNewQueue()
 {
    QUEUE *newQueue = NULL;
-
    /* allocate memory */
    newQueue = (QUEUE *) malloc(sizeof(QUEUE));
    if( newQueue == NULL )
-   {
+   {/* check memory allocation */
       printf("Memory allocation failed on makeNewQueue");
       exit(-1);
    }
