@@ -1,5 +1,7 @@
 #ifndef __CUSTOMER_H
 #define __CUSTOMER_H
+#include <stdlib.h>
+#include <stdio.h>
 struct customerObject
 {
    int toleranceRemaining;

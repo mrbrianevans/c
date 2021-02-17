@@ -7,7 +7,7 @@ extern SERVICE_POINTS *makeServicePoints(int numServicePoints)
    if( servicePoints == NULL )
    {
       printf("Memory allocation failed on makeServicePoints:servicePoints");
-      exit(-1);
+      exit(-2);
    }
    servicePoints->totalServicePoints = numServicePoints;
    servicePoints->availableServicePoints = numServicePoints;

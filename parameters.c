@@ -1,4 +1,4 @@
-#include <getInstructions.h>
+#include <parameters.h>
 
 extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions,
                                     FILE *outputFile)
@@ -32,7 +32,7 @@ extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions,
                 &inputOptions->averageServeTime);
       }
    }
-   fprintf(outputFile, "Parameters read from %s:\n", filename);
+   fprintf(outputFile, "\x1b[32mParameters read from %s:\x1b[0m\n", filename);
    fprintf(outputFile, "Max queue length: %d\n", inputOptions->maxQueueLength);
    fprintf(outputFile, "Number of service points: %d\n",
            inputOptions->numServicePoints);

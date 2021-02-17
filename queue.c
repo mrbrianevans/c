@@ -12,7 +12,7 @@ static QUEUE_ITEM *makeNewQueueItem(int toleranceToWaiting)
    if( newQueueItem == NULL )
    {
       printf("Memory allocation failed on makeNewQueueItem");
-      exit(-1);
+      exit(-2);
    }
    newQueueItem->customer = makeNewCustomer(toleranceToWaiting);
    newQueueItem->next = NULL;
@@ -78,7 +78,7 @@ extern void shift(QUEUE *queue)
 
 extern void emptyQueue(QUEUE *queue)
 {
-   while( queue->head->next != NULL )
+   while( queue->length )
    {
       shift(queue);
    }

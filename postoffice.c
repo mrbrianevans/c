@@ -1,48 +1,23 @@
 /* Coursework - post office queueing system */
-#include <queue.h>
-#include <getInstructions.h>
-#include <servicePoints.h>
-#include <iteration.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
+#include <postoffice.h>
 
-/* MAIN --------------------------------------------------*/
-int main(int argc, char *argv[])
+extern int singleSimulation(INPUT_OPTIONS *inputOptions, FILE *outputFile,
+                            MULTIPLE_STATISTICS *multipleStatistics)
 {
-   if( argc < 4 )
-   {
-      fprintf(stderr,
-              "Not enough command line arguments. Try fileIn numSims fileOut\n");
-      return -1;
-   }
 
-   char *inputFile = argv[1];
-   int numSims = 0;
-   sscanf(argv[2], "%d", &numSims);
-   char *outputFileName = argv[3];
-   FILE *outputFile = NULL;
-   if((outputFile = fopen(outputFileName, "w")) == NULL )
-   {
-      fprintf(stderr,
-              "Cannot create/write to output file %s: \n\x1b[31mError:\x1b[0m %s",
-              outputFileName, strerror(errno));
-   }
-   /*Get input options from file (command line argument)*/
-   INPUT_OPTIONS *inputOptions = NULL;
-   inputOptions = (INPUT_OPTIONS *) malloc(sizeof(INPUT_OPTIONS));
-   if( readInputOptionsFromFile(inputFile, inputOptions, outputFile) != 0 )
-      return -1;
-
-
+   int numSims = inputOptions->numSims;
    QUEUE *queue = makeNewQueue();
    SERVICE_POINTS *servicePoints = makeServicePoints(
          inputOptions->numServicePoints);
 
    SSTATS *statistics = NULL;
    statistics = (SSTATS *) malloc(sizeof(SSTATS));
+   if( statistics == NULL )
+   {
+      fprintf(stderr,
+              "\x1b[31mError:\x1b[0m Memory allocation failed for statistics");
+      return -2; /* minus two for failed memory allocation */
+   }
    for(statistics->timeInterval = 0; statistics->timeInterval <
                                      inputOptions->closingTime; statistics->timeInterval++)
    {
@@ -59,7 +34,11 @@ int main(int argc, char *argv[])
          printIterationStatistics(outputFile, statistics);
       }
    }
-   fprintf(outputFile, "------------ CLOSING TIME ------------\n");
+   if( numSims == 1 )
+   {
+      fprintf(outputFile,
+              "\x1b[31m------------ CLOSING TIME ------------\x1b[0m\n");
+   }
    while( queue->length > 0 || servicePoints->availableServicePoints <
                                servicePoints->totalServicePoints )
    {
@@ -77,16 +56,30 @@ int main(int argc, char *argv[])
       statistics->timeInterval++;
       statistics->closingTimeToCompletion++;
    }
-
-   fprintf(outputFile,
-           "Time from closing until all customers were served: %d intervals\n",
-           statistics->closingTimeToCompletion);
-   fprintf(outputFile,
-           "Average wait time for fulfilled customers: %.2f intervals\n",
-           1.0 * statistics->totalWaitTime / statistics->numFulfilled);
-
-   fclose(outputFile);
-   printf("Successfully written output of simulation to %s\n", outputFileName);
+   if( numSims == 1 )
+   {
+      fprintf(outputFile,
+              "Time from closing until all customers were served: %d intervals\n",
+              statistics->closingTimeToCompletion);
+      fprintf(outputFile,
+              "Average wait time for fulfilled customers: %.2f intervals\n",
+              1.0 * statistics->totalWaitTime / statistics->numFulfilled);
+   }
+   else
+   {
+      /*add statistics to multiple statistics*/
+      multipleStatistics->numSuccessfulSims++;
+      multipleStatistics->totalWaitTime += (1.0 * statistics->totalWaitTime /
+                                            statistics->numFulfilled);
+      multipleStatistics->totalClosingToCompletion += statistics->closingTimeToCompletion;
+      multipleStatistics->totalFulfilled += statistics->numFulfilled;
+      multipleStatistics->totalUnfulfilled += statistics->numUnfulfilled;
+      multipleStatistics->totalTimedOut += statistics->numTimedOut;
+   }
+   statistics = NULL;
+   free(servicePoints);
+   emptyQueue(queue);
+   free(queue);
    return 0;
 }
 

@@ -9,6 +9,7 @@
 
 struct inputOptionsStruct
 {
+   int numSims;
    int maxQueueLength;
    int numServicePoints;
    int closingTime;

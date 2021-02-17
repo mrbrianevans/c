@@ -1,6 +1,4 @@
 #include <customer.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 extern CUSTOMER *makeNewCustomer(int toleranceRemaining)
 {
@@ -11,7 +9,7 @@ extern CUSTOMER *makeNewCustomer(int toleranceRemaining)
    if( newCustomer == NULL )
    {
       printf("Memory allocation failed on makeNewCustomer");
-      exit(-1);
+      exit(-2);
    }
    newCustomer->toleranceRemaining = toleranceRemaining;
    newCustomer->timeSpentWaiting = 0;
