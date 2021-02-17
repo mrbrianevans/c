@@ -30,7 +30,7 @@ static int randomInt(gsl_rng *r, int min, int max)
 
 extern int customersFinishedBeingServedLeave(SERVICE_POINTS *servicePoints, INPUT_OPTIONS *inputOptions, SSTATS *stats)
 {
-   /* customers have a x% chance of finishing being served each timepoint. If rng > 0.4 then cust leaves */
+   /* customers have a x% chance of finishing being served each time point. If random > x then customer leaves */
    int numberOfCustomersBeingServed = servicePoints->totalServicePoints - servicePoints->availableServicePoints;
    int i;
    for(i = 0; i < numberOfCustomersBeingServed; ++i)
@@ -54,8 +54,10 @@ extern int customersInQueueGetServedAtAvailableServicePoints(SERVICE_POINTS *ser
    while( servicePoints->availableServicePoints > 0 && stats->customersInQueue > 0 )
    {
       /* While there are available service points and customers waiting... */
-      servicePoints->availableServicePoints = servicePoints->availableServicePoints - 1;
-      /*stats->totalWaitTime += queue->head->customer->timeSpentWaiting;*/
+      servicePoints->availableServicePoints =
+            servicePoints->availableServicePoints - 1;
+      /* only aggregates the time spent waiting in queue of fulfilled customers */
+      stats->totalWaitTime += queue->head->customer->timeSpentWaiting;
       shift(queue);
       stats->customersBeingServed++;
       stats->customersInQueue--;
@@ -67,14 +69,13 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *queue, INPUT_
 {
    /* no random generator here, just check if timeSpentWaiting++==toleranceToWaiting */
    QUEUE_ITEM *currentQitem = queue->head;
-   stats->totalWaitTime += queue->length;
    int i;
    for(i = 0; i < queue->length; ++i)
    {
-      if( currentQitem->customer->toleranceRemaining < currentQitem->customer->timeSpentWaiting++ )
+      if( currentQitem->customer->toleranceRemaining <
+          ++currentQitem->customer->timeSpentWaiting )
       {
          stats->numTimedOut++;
-         /*stats->totalWaitTime += currentQitem->customer->timeSpentWaiting;*/
          stats->customersInQueue--;
          if( currentQitem->previous == NULL )
          { /*this is if the head times out*/
@@ -134,18 +135,19 @@ extern int customersArriveAtBackOfQueue(QUEUE *queue, INPUT_OPTIONS *inputOption
    return 0;
 }
 
-extern void printIterationStatistics(char *outputFile, SSTATS *stats)
+extern void printIterationStatistics(FILE *outputFile, SSTATS *stats)
 {
-   printf("\n");
-   printf("Statistics:\n");
-   printf("timeInterval: %d\n", stats->timeInterval);
-   printf("customersInQueue: %d\n", stats->customersInQueue);
-   printf("customersBeingServed: %d\n", stats->customersBeingServed);
-   printf("numFulfilled: %d\n", stats->numFulfilled);
-   printf("numUnfulfilled: %d\n", stats->numUnfulfilled);
-   printf("numTimedOut: %d\n", stats->numTimedOut);
-   printf("totalWaitingTime: %d\n", stats->totalWaitTime);
-   printf("closingTimeToCompletion: %d\n", stats->closingTimeToCompletion);
-   printf("totalServeTime: %d\n", stats->totalServeTime);
-   printf("\n");
+   fprintf(outputFile, "\n");
+   fprintf(outputFile, "Time interval: %d\n", stats->timeInterval);
+   fprintf(outputFile, "Customers currently being served: %d\n",
+           stats->customersBeingServed);
+   fprintf(outputFile, "Customers currently in queue:     %d\n",
+           stats->customersInQueue);
+   fprintf(outputFile, "Number of fulfilled customers:    %d\n",
+           stats->numFulfilled);
+   fprintf(outputFile, "Number of unfulfilled customers:  %d\n",
+           stats->numUnfulfilled);
+   fprintf(outputFile, "Number of timed out customers:    %d\n",
+           stats->numTimedOut);
+   fprintf(outputFile, "\n");
 }

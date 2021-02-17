@@ -21,6 +21,10 @@ struct inputOptionsStruct
 typedef struct inputOptionsStruct INPUT_OPTIONS;
 
 /*--- Function prototypes --------------------*/
-extern int readInputOptionsFromFile(char *, INPUT_OPTIONS *);
+/**
+ * Reads parameters from an input file
+ * @return int status code (0=SUCCESS)
+ */
+extern int readInputOptionsFromFile(char *, INPUT_OPTIONS *, FILE *);
 
 #endif

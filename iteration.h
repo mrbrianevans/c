@@ -33,6 +33,6 @@ extern int customersLeaveQueueAfterReachingWaitingTolerance(QUEUE *, INPUT_OPTIO
 
 extern int customersArriveAtBackOfQueue(QUEUE *, INPUT_OPTIONS *, SSTATS *);
 
-extern void printIterationStatistics(char *, SSTATS *);
+extern void printIterationStatistics(FILE *, SSTATS *);
 
 #endif

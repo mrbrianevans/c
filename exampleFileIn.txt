@@ -1,14 +1,18 @@
 # The format of this file is:
 # - lines beginning with # are ignored as comments
 # - variables can be in any order
-# - if parameters are omitted, default values are used
+# - if parameters are omitted(or commented out), default values are used
 
 # The standard parameters, as described in the specification:
-maxQueueLength   20000
-numServicePoints 100
-closingTime      100000
+maxQueueLength   20
+numServicePoints 3
+closingTime      10
 
 # Parameters added by me:
-averageNewCustomersPerInterval  100
-averageServeTime                100
-averageToleranceToWaiting       50
+averageNewCustomersPerInterval  5
+averageServeTime                2
+averageToleranceToWaiting       15
+
+# comment out lines to use defaults, eg:
+# numServicePoints 10
+# will set numServicePoints to 3 (by default)

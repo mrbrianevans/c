@@ -1,35 +1,7 @@
 #include <queue.h>
 
-static void printQueueItem(QUEUE_ITEM *);
-
 /** @returns an isolated queue item */
 static QUEUE_ITEM *makeNewQueueItem(int);
-
-/* FUNCTION DEFINITIONS ---------------------------------*/
-static void printQueueItem(QUEUE_ITEM *queueItem)
-{
-   printf("%d", queueItem->customer->toleranceRemaining);
-   if( queueItem->next == NULL )
-   {
-      printf("(tail)\n");
-      return;
-   }
-   printf("->");
-   fflush(stdout);
-   printQueueItem(queueItem->next);
-}
-
-extern void printQueue(QUEUE *queue)
-{
-   if( queue->length == 0 )
-   {
-      printf("Empty queue\n");
-      return;
-   }
-   printf("(head)");
-   printQueueItem(queue->head);
-}
-
 
 static QUEUE_ITEM *makeNewQueueItem(int toleranceToWaiting)
 {
@@ -102,11 +74,6 @@ extern void shift(QUEUE *queue)
       queue->head->previous = NULL;
       queue->length--;
    }
-   /*printf("Queue length is: %d, and head->next->tolerance is %d\n", queue->length, queue->head->next->customer->toleranceRemaining);
-   fflush(stdout);
-
-   printf("Queue after shift: ");
-   printQueue(queue);*/
 }
 
 extern void emptyQueue(QUEUE *queue)
