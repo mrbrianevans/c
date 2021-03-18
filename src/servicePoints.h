@@ -1,6 +1,6 @@
 #ifndef __SERVICE_POINTS_H
 #define __SERVICE_POINTS_H
-#include <customer.h>
+#include "customer.h"
 #include <stdio.h>
 #include <stdlib.h>
 

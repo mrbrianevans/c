@@ -1,4 +1,4 @@
-#include <simQ.h>
+#include "simQ.h"
 
 int main(int argc, char *argv[])
 {

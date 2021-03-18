@@ -1,5 +1,5 @@
 /* single post office simulation */
-#include <postoffice.h>
+#include "postoffice.h"
 
 extern int singleSimulation(INPUT_OPTIONS *inputOptions, FILE *outputFile,
                             MULTIPLE_STATISTICS *multipleStatistics)

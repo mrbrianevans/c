@@ -1,13 +1,13 @@
 #ifndef __POSTOFFICE_H
 #define __POSTOFFICE_H
-#include <queue.h>
-#include <parameters.h>
-#include <servicePoints.h>
-#include <iteration.h>
+#include "queue.h"
+#include "parameters.h"
+#include "servicePoints.h"
+#include "iteration.h"
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include <statistics.h>
+#include "statistics.h"
 
 /**
  * Runs a single simulation, appending the results to multiple statistics

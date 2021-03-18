@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function compile() {
-  gcc -ansi -I./ -c $1.c -o $1.o
+  gcc -ansi -I./src -c src/$1.c -o src/$1.o
 }
 
+# compile each file
 compile iteration
 compile servicePoints
 compile queue
@@ -13,8 +14,8 @@ compile parameters
 compile simQ
 compile statistics
 
-# link them all together
-gcc -I./ simQ.o statistics.o iteration.o servicePoints.o queue.o postoffice.o customer.o parameters.o -lgsl -o simQ
+# link them all together into an executable (simQ)
+gcc -I./src src/simQ.o src/statistics.o src/iteration.o src/servicePoints.o src/queue.o src/postoffice.o src/customer.o src/parameters.o -lgsl -o simQ
 
-# todo: remove this run command before submission
-./simQ testInput.txt 10000 fileOut.txt
+# remove all object code after linking
+rm src/*.o

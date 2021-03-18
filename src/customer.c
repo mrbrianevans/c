@@ -1,4 +1,4 @@
-#include <customer.h>
+#include "customer.h"
 
 extern CUSTOMER *makeNewCustomer(int toleranceRemaining)
 {

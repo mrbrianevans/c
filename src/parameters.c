@@ -1,4 +1,4 @@
-#include <parameters.h>
+#include "parameters.h"
 
 extern int readInputOptionsFromFile(char *filename, INPUT_OPTIONS *inputOptions,
                                     FILE *outputFile)

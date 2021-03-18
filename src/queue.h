@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <customer.h>
+#include "customer.h"
 
 /* Queue implemented by a doubly linked list */
 struct queueItemStruct

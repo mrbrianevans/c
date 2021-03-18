@@ -1,4 +1,4 @@
-#include <queue.h>
+#include "queue.h"
 
 /** @returns an isolated queue item */
 static QUEUE_ITEM *makeNewQueueItem(int);
